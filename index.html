@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw Mission Control</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mission-control">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <span class="logo-icon">⚗️</span>
+                    <span class="logo-text">OpenClaw Mission Control</span>
+                </div>
+                <div class="system-status">
+                    <span class="status-indicator online"></span>
+                    <span class="status-text">SYSTEM ONLINE</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="clock" id="clock">00:00:00</div>
+                <div class="date" id="date">Loading...</div>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="main-grid">
+            <!-- Agent Overview Panel -->
+            <section class="panel agent-overview">
+                <h2 class="panel-title">
+                    <span class="icon">🤖</span>
+                    Agent Fleet
+                </h2>
+                <div class="agent-stats">
+                    <div class="stat-card active">
+                        <div class="stat-value" id="active-agents">3</div>
+                        <div class="stat-label">Active</div>
+                    </div>
+                    <div class="stat-card idle">
+                        <div class="stat-value" id="idle-agents">2</div>
+                        <div class="stat-label">Idle</div>
+                    </div>
+                    <div class="stat-card offline">
+                        <div class="stat-value" id="offline-agents">0</div>
+                        <div class="stat-label">Offline</div>
+                    </div>
+                </div>
+                <div class="agent-list" id="agent-list">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Task Board -->
+            <section class="panel task-board">
+                <h2 class="panel-title">
+                    <span class="icon">📋</span>
+                    Task Board
+                </h2>
+                <div class="kanban">
+                    <div class="kanban-column pending">
+                        <div class="column-header">
+                            <span class="dot"></span>
+                            <span>Pending</span>
+                            <span class="count" id="pending-count">2</span>
+                        </div>
+                        <div class="task-list" id="pending-tasks">
+                            <div class="task-card" data-id="1">
+                                <div class="task-title">Review PR #42</div>
+                                <div class="task-meta">
+                                    <span class="priority high">High</span>
+                                    <span class="agent">@haiku</span>
+                                </div>
+                            </div>
+                            <div class="task-card" data-id="2">
+                                <div class="task-title">Update documentation</div>
+                                <div class="task-meta">
+                                    <span class="priority medium">Med</span>
+                                    <span class="agent">@mini</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column active">
+                        <div class="column-header">
+                            <span class="dot"></span>
+                            <span>Active</span>
+                            <span class="count" id="active-count">1</span>
+                        </div>
+                        <div class="task-list" id="active-tasks">
+                            <div class="task-card running" data-id="3">
+                                <div class="task-title">Build Mission Control</div>
+                                <div class="task-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                    <span class="progress-text">65%</span>
+                                </div>
+                                <div class="task-meta">
+                                    <span class="priority high">High</span>
+                                    <span class="agent">@kimi</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column completed">
+                        <div class="column-header">
+                            <span class="dot"></span>
+                            <span>Done</span>
+                            <span class="count" id="completed-count">5</span>
+                        </div>
+                        <div class="task-list" id="completed-tasks">
+                            <div class="task-card done">
+                                <div class="task-title">Setup workspace</div>
+                                <div class="task-meta">
+                                    <span class="time">2h ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column failed">
+                        <div class="column-header">
+                            <span class="dot"></span>
+                            <span>Failed</span>
+                            <span class="count" id="failed-count">0</span>
+                        </div>
+                        <div class="task-list" id="failed-tasks">
+                            <!-- Empty -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Session Logs -->
+            <section class="panel session-logs">
+                <h2 class="panel-title">
+                    <span class="icon">📜</span>
+                    Session Logs
+                </h2>
+                <div class="log-container" id="log-container">
+                    <div class="log-entry">
+                        <span class="timestamp">00:58:12</span>
+                        <span class="level info">[INFO]</span>
+                        <span class="message">Mission Control dashboard initialized</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="timestamp">00:57:45</span>
+                        <span class="level success">[SUCCESS]</span>
+                        <span class="message">Agent 'kimi' connected successfully</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="timestamp">00:57:30</span>
+                        <span class="level info">[INFO]</span>
+                        <span class="message">Task #3 started: Build Mission Control</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="timestamp">00:56:15</span>
+                        <span class="level warn">[WARN]</span>
+                        <span class="message">High memory usage detected on agent 'haiku'</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="timestamp">00:55:00</span>
+                        <span class="level info">[INFO]</span>
+                        <span class="message">Cron job scheduled: development iteration</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Health -->
+            <section class="panel system-health">
+                <h2 class="panel-title">
+                    <span class="icon">💓</span>
+                    System Health
+                </h2>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span class="metric-name">Memory Usage</span>
+                            <span class="metric-value" id="memory-usage">2.4 GB</span>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 48%"></div>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span class="metric-name">Uptime</span>
+                            <span class="metric-value" id="uptime">12h 34m</span>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-fill stable" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span class="metric-name">Token Usage (24h)</span>
+                            <span class="metric-value" id="token-usage">45.2K</span>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 35%"></div>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span class="metric-name">API Latency</span>
+                            <span class="metric-value" id="latency">124ms</span>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-fill good" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="panel quick-actions">
+                <h2 class="panel-title">
+                    <span class="icon">⚡</span>
+                    Quick Actions
+                </h2>
+                <div class="action-grid">
+                    <button class="action-btn primary" onclick="spawnAgent()">
+                        <span class="icon">+</span>
+                        Spawn Agent
+                    </button>
+                    <button class="action-btn" onclick="clearLogs()">
+                        <span class="icon">🗑️</span>
+                        Clear Logs
+                    </button>
+                    <button class="action-btn" onclick="refreshStatus()">
+                        <span class="icon">🔄</span>
+                        Refresh
+                    </button>
+                    <button class="action-btn" onclick="exportData()">
+                        <span class="icon">📤</span>
+                        Export
+                    </button>
+                    <button class="action-btn danger" onclick="emergencyStop()">
+                        <span class="icon">⏹️</span>
+                        Emergency Stop
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-left">
+                <span>OpenClaw v1.0.0</span>
+                <span class="separator">|</span>
+                <span>Gateway: Connected</span>
+                <span class="separator">|</span>
+                <span>Node: Online</span>
+            </div>
+            <div class="footer-right">
+                <span>Next cron: <span id="next-cron">30m</span></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
